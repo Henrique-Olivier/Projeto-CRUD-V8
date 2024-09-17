@@ -1,0 +1,8 @@
+html, body {
+    height: 100%;
+}
+
+.form-login {
+    max-width: 390px;
+    width: 100%;
+}
