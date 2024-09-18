@@ -44,7 +44,7 @@ function showUsers(userList) {
     userList.forEach((user, index) => {
 
         insertUsers.innerHTML += `
-    <tr index=${index}>
+    <tr id="user${index}" index=${index}>
         <td id="user-name">${user.name}</td>
         <td id="user-email">${user.email}</td>
         <td id="user-type">
@@ -72,7 +72,7 @@ function btnDelete () {
     
     btnDelete.forEach(button => {
         button.addEventListener('click', (evento) => {
-            deleteUser(evento.target.parentElement.parentElement.index)   
+            deleteUser(evento.target.parentElement.parentElement)   
         })
     })
 }
@@ -88,41 +88,43 @@ function btnEdit () {
 }
 
 function deleteUser (indexOfUser) {
-    users.splice(indexOfUser, 1)
+    console.log(indexOfUser) 
+    users.splice(indexOfUser.getAttribute('index'), 1)
     showUsers(users)
 }
 
 
 // Edicao do usuario em progresso 
 function editUser(userElement) {
+    let index = userElement.getAttribute('index')
     let userName = userElement.querySelector("#user-name")
     let userType = userElement.querySelector("#user-email")
     let userEmail = userElement.querySelector("#user-type")
     let userValue = userElement.querySelector("#user-values")
     let button = userElement.querySelector(".btn-primary")
 
-    userName.innerHTML = `<input id='user-name-input'>` 
-    userType.innerHTML = `<input id='user-email-input'>`
+    userName.innerHTML = `<input id='user${index}-name-input'>` 
+    userType.innerHTML = `<input id='user${index}-email-input'>`
     userEmail.innerHTML = `
-    <select class="form-control" id='user-type-select'>
+    <select class="form-control" id='user${index}-type-select'>
     <option value="0">Selecione</option>
     <option value="recurrent">Recorrente</option>
     <option value="annually">Anual</option>
     <option value="single">Avulso</option>
     </select>`
-    userValue.innerHTML = `<input id='user-value-input'>`
+    userValue.innerHTML = `<input id='user${index}-value-input'>`
     button.innerHTML = 'confirmar'; button.setAttribute('onclick', 'confirmEdit(event.target.parentElement.parentElement)')
 }
 
 function confirmEdit (userElement) {
-    let user = users[userElement.index]
-    let newName = userElement.querySelector("#user-name-input").value
-    let newType = userElement.querySelector("#user-email-input").value
-    let newEmail = userElement.querySelector("#user-type-select").value
-    let newValue = userElement.querySelector("#user-value-input").value
-    let button = userElement.querySelector(".btn-primary")
+    let index = userElement.getAttribute('index')
+    let newName = document.querySelector(`#user${index}-name-input`)
+    let newType = document.querySelector(`#user${index}-email-input`)
+    let newEmail = document.querySelector(`#user${index}-type-select`)
+    let newValue = document.querySelector(`#user${index}-value-input`)
+    let button = document.querySelector(".btn-primary")
 
-    console.log (userElement.querySelector("#user-name-input").value)
+    console.log (newName)
 }
 
 // Edicao do usuario em progresso 
