@@ -35,6 +35,51 @@ const users = [
 const insertUsers = document.getElementById('users');
 const btnFilter = document.getElementById('btn-filter');
 
+// Função para editar o usuário
+function editUser(userElement) {
+    let index = userElement.getAttribute('index');
+    let userName = userElement.querySelector("#user-name");
+    let userEmail = userElement.querySelector("#user-email");
+    let userType = userElement.querySelector("#user-type");
+    let userValue = userElement.querySelector("#user-values");
+    let button = userElement.querySelector(".btn-primary");
+
+    // Transformar os campos em inputs preenchidos com os valores atuais
+    userName.innerHTML = `<input id='user${index}-name-input' value='${users[index].name}'>`;
+    userEmail.innerHTML = `<input id='user${index}-email-input' value='${users[index].email}'>`;
+    userType.innerHTML = `
+    <select class="form-control" id='user${index}-type-select'>
+        <option value="recurrent" ${users[index].type === 'recurrent' ? 'selected' : ''}>Recorrente</option>
+        <option value="annually" ${users[index].type === 'annually' ? 'selected' : ''}>Anual</option>
+        <option value="single" ${users[index].type === 'single' ? 'selected' : ''}>Avulso</option>
+    </select>`;
+    userValue.innerHTML = `<input id='user${index}-value-input' value='${users[index].values}'>`;
+
+    // Alterar o botão para "Confirmar" e associar a função de confirmação
+    button.innerHTML = 'Confirmar';
+    button.onclick = () => confirmEdit(userElement);
+}
+
+// Função para confirmar a edição
+function confirmEdit(userElement) {
+    let index = userElement.getAttribute('index');
+
+    // Coletar os novos valores dos inputs
+    let newName = document.querySelector(`#user${index}-name-input`).value;
+    let newEmail = document.querySelector(`#user${index}-email-input`).value;
+    let newType = document.querySelector(`#user${index}-type-select`).value;
+    let newValue = document.querySelector(`#user${index}-value-input`).value;
+
+    // Atualizar o array com os novos valores
+    users[index].name = newName;
+    users[index].email = newEmail;
+    users[index].type = newType;
+    users[index].values = parseFloat(newValue);
+
+    // Re-renderizar a lista de usuários
+    showUsers(users);
+}
+
 // Constante de mapeamento de tipos para estilos
 const clientTypeMapping = {
     'recurrent': '<span class="badge text-bg-primary">Recorrente</span>',
