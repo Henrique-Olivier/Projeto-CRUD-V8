@@ -6,3 +6,11 @@ html, body {
     max-width: 390px;
     width: 100%;
 }
+
+small {
+    color: red;
+}
+
+#btn-clearFilter {
+    display: none;
+}

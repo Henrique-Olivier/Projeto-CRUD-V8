@@ -29,11 +29,14 @@ const users = [
         type: 'annually',
         values: 15000
     },
-    
+
 ];
 
 const insertUsers = document.getElementById('users');
 const btnFilter = document.getElementById('btn-filter');
+const btnClearFilter = document.getElementById("btn-clearFilter")
+
+
 
 // Função para editar o usuário
 function editUser(userElement) {
@@ -109,36 +112,36 @@ function showUsers(userList) {
             </td>
             <td id="user-values">${user.values.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}</td>
             <td>
-                <button class="btn btn-primary">Editar</button>
-                <button class="btn btn-danger">Excluir</button>
+                <button id='btn-editar' class="btn btn-primary">Editar</button>
+                <button id='btn-excluir' class="btn btn-danger">Excluir</button>
             </td>
         </tr>
         `;
     });
-    
+
     btnDelete();
     btnEdit();
 }
 
 function clearUsers() {
     insertUsers.innerHTML = '';
-} 
+}
 
 function btnDelete() {
-    const btnDelete = document.querySelectorAll('.btn-danger');
-    
+    const btnDelete = document.querySelectorAll('#btn-excluir');
+
     btnDelete.forEach(button => {
         button.addEventListener('click', (evento) => {
-            deleteUser(evento.target.parentElement.parentElement);   
+            deleteUser(evento.target.parentElement.parentElement);
         });
     });
 }
 
 function btnEdit() {
-    const btnEdit = document.querySelectorAll('.btn-primary');
+    const btnEdit = document.querySelectorAll('#btn-editar');
     btnEdit.forEach(button => {
         button.addEventListener('click', (event) => {
-            editUser(event.target.parentElement.parentElement);   
+            editUser(event.target.parentElement.parentElement);
         });
     });
 }
@@ -181,6 +184,34 @@ function Filter() {
         }
     }
 
-    showUsers(filteredUsers);
+    filteredUsers.length == 0 ? insertUsers.innerHTML = `Não foram encontrados resutaldos para o filtro.` : showUsers(filteredUsers);
 }
 
+
+const inputSearch = document.getElementById('input-search')
+const selectCategory = document.getElementById('select-category')
+const selectValues = document.getElementById('select-values')
+inputSearch.addEventListener('keyup', showButtonClear)
+selectCategory.addEventListener('change', showButtonClear)
+selectValues.addEventListener('change', showButtonClear)
+
+function showButtonClear() {
+    const inputSearch = document.getElementById('input-search').value;
+    const selectCategory = document.getElementById('select-category').value;
+    const selectValues = document.getElementById('select-values').value;
+
+    if (inputSearch != '' || selectCategory != 0 || selectValues != 0) {
+        btnClearFilter.style.display = 'block'
+    } else {
+        btnClearFilter.style.display = 'none'
+    }
+} 
+
+btnClearFilter.addEventListener('click', clearFilter) 
+
+function clearFilter () {
+    document.getElementById('input-search').value = ''
+    document.getElementById('select-category').value = '0'
+    document.getElementById('select-values').value = '0' 
+    showButtonClear()
+}
