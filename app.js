@@ -191,6 +191,7 @@ function Filter() {
 const inputSearch = document.getElementById('input-search')
 const selectCategory = document.getElementById('select-category')
 const selectValues = document.getElementById('select-values')
+
 inputSearch.addEventListener('keyup', showButtonClear)
 selectCategory.addEventListener('change', showButtonClear)
 selectValues.addEventListener('change', showButtonClear)
