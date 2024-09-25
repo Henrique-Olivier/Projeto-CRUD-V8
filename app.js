@@ -1,36 +1,56 @@
-const users = [
-    {
-        name: 'Mark',
-        email: 'Mark@email.com',
-        type: 'recurrent',
-        values: 2000
-    },
-    {
-        name: 'Henrique',
-        email: 'Henrique@email.com',
-        type: 'single',
-        values: 2000
-    },
-    {
-        name: 'Lilo',
-        email: 'Lilo@email.com',
-        type: 'annually',
-        values: 122000
-    },
-    {
-        name: 'Marta',
-        email: 'Marta@email.com',
-        type: 'recurrent',
-        values: 5000
-    },
-    {
-        name: 'Henrique Olivier',
-        email: 'Olivier@email.com',
-        type: 'annually',
-        values: 15000
-    },
+// const users = [
+//     {
+//         name: 'Mark',
+//         email: 'Mark@email.com',
+//         type: 'recurrent',
+//         values: 2000
+//     },
+//     {
+//         name: 'Henrique',
+//         email: 'Henrique@email.com',
+//         type: 'single',
+//         values: 2000
+//     },
+//     {
+//         name: 'Lilo',
+//         email: 'Lilo@email.com',
+//         type: 'annually',
+//         values: 122000
+//     },
+//     {
+//         name: 'Marta',
+//         email: 'Marta@email.com',
+//         type: 'recurrent',
+//         values: 5000
+//     },
+//     {
+//         name: 'Henrique Olivier',
+//         email: 'Olivier@email.com',
+//         type: 'annually',
+//         values: 15000
+//     },
 
-];
+// ];
+
+let users = []
+const endpointAPI = 'https://mocki.io/v1/5b432f80-ac79-4225-8c8b-7bb37a424885'
+
+async function buscarUsuariosNaAPI() {
+    try {
+        const res = await fetch(endpointAPI)
+        users = await res.json()
+        showUsers(users)
+    } catch (erro) {
+        const inserirErro = document.querySelector(".table")
+        inserirErro.innerHTML = 
+    `<div class="alert alert-warning" role="alert">
+        Falha ao buscar informações
+    </div>`
+        console.error(`Erro ao buscar informações: ${erro}`)
+    }
+}
+
+buscarUsuariosNaAPI()   
 
 const insertUsers = document.getElementById('users');
 const btnFilter = document.getElementById('btn-filter');
@@ -69,6 +89,7 @@ function confirmEdit(userElement) {
 
     // Coletar os novos valores dos inputs
     let newName = document.querySelector(`#user${index}-name-input`).value;
+    console.log(newName);
     let newEmail = document.querySelector(`#user${index}-email-input`).value;
     let newType = document.querySelector(`#user${index}-type-select`).value;
     let newValue = document.querySelector(`#user${index}-value-input`).value;
@@ -98,7 +119,11 @@ const valueRangeMapping = {
 };
 
 btnFilter.addEventListener('click', Filter);
-showUsers(users);
+// showUsers(users);
+
+function clearUsers() {
+    insertUsers.innerHTML = '';
+}
 
 function showUsers(userList) {
     clearUsers();
@@ -123,9 +148,6 @@ function showUsers(userList) {
     btnEdit();
 }
 
-function clearUsers() {
-    insertUsers.innerHTML = '';
-}
 
 function btnDelete() {
     const btnDelete = document.querySelectorAll('#btn-excluir');
@@ -184,7 +206,9 @@ function Filter() {
         }
     }
 
-    filteredUsers.length == 0 ? insertUsers.innerHTML = `Não foram encontrados resutaldos para o filtro.` : showUsers(filteredUsers);
+    filteredUsers.length == 0 ? insertUsers.innerHTML = `<div class="alert alert-warning" role="alert">
+Não foram enconstrados resultados para o fitro
+</div>` : showUsers(filteredUsers);
 }
 
 
@@ -206,13 +230,14 @@ function showButtonClear() {
     } else {
         btnClearFilter.style.display = 'none'
     }
-} 
+}
 
-btnClearFilter.addEventListener('click', clearFilter) 
+btnClearFilter.addEventListener('click', clearFilter)
 
-function clearFilter () {
+function clearFilter() {
     document.getElementById('input-search').value = ''
     document.getElementById('select-category').value = '0'
-    document.getElementById('select-values').value = '0' 
+    document.getElementById('select-values').value = '0'
     showButtonClear()
+    showUsers(users)
 }
