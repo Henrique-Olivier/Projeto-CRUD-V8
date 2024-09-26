@@ -49,12 +49,13 @@ function showUsers(userList) {
             </td>
             <td id="user-values">${user.billing.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}</td>
             <td>
-                <button id='btn-editar' class="btn btn-primary">Editar</button>
+                <button id='btn-editar' class="btn btn-primary" type-modal="edit" data-bs-toggle="modal" data-bs-target="#exampleModal">Editar</button>
                 <button id='btn-excluir' class="btn btn-danger">Excluir</button>
             </td>
         </tr>
         `;
     });
+    selectModals();
 }
 
 // Substituindo o switch case por um lookup na constante
@@ -142,4 +143,51 @@ function clearFilter() {
     document.getElementById('select-values').value = '0'
     showButtonClear()
     showUsers(users)
+}
+
+let listBtnModals = [];
+let typeModal;
+let idUser;
+function selectModals(){
+    listBtnModals = document.querySelectorAll("[type-modal]");
+    listBtnModals.forEach((e) => {
+        e.addEventListener("click", (e) => {
+            typeModal = e.target.getAttribute("type-modal");
+            idUser = e.target.parentElement.parentElement.getAttribute("id")
+            editModals(typeModal)
+        })
+    })
+}
+
+const btnConfirmModal = document.querySelector('#btn-confirm');
+const titleModal = document.querySelector('#exampleModalLabel');
+function editModals(typeModal){
+    const name = document.querySelector("#input-name");
+    const email = document.querySelector("#input-email");
+    const client_type = document.querySelector("#modal-select-category");
+    const billing = document.querySelector("#input-billing");
+
+    if(typeModal == 'create'){
+        titleModal.textContent = 'Adicionar novo cliente';
+        btnConfirmModal.textContent = 'Adicionar';
+    } else {
+        titleModal.textContent = 'Editar cliente';
+        btnConfirmModal.textContent = 'Editar';
+    }
+}
+
+btnConfirmModal.addEventListener("click", save);
+function save() {
+    const name = document.querySelector("#input-name").value.toLowerCase();
+    const email = document.querySelector("#input-email").value.toLowerCase();
+    const client_type = document.querySelector("#modal-select-category").value;
+    const billing = document.querySelector("#input-billing").value;
+
+    idUser = idUser.substr(4, idUser.length-1)
+
+    if(typeModal == 'create'){
+        createUser(name, email, client_type, billing)
+    } else {
+        editUser(idUser, name, email, client_type, billing)
+    }
 }
