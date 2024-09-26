@@ -6,6 +6,8 @@ async function deleteUser (userId) {
                 apiKey
             }
         })
+        showAlert('success', 'Usuário Excluido com sucesso', 5000)
+        getAllUsersAPI()
    } catch(error) {
        console.error('Erro ao exlcuir usuário' + error)
    }

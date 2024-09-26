@@ -38,10 +38,10 @@ function clearUsers() {
 }
 
 function showUsers(userList) {
-    // clearUsers();
+    clearUsers();
     userList.forEach((user) => {
         insertUsers.innerHTML += `
-        <tr id="user${user.id}">
+        <tr id="${user.id}">
             <td id="user-name">${user.name}</td>
             <td id="user-email">${user.email}</td>
             <td id="user-type">
@@ -56,6 +56,7 @@ function showUsers(userList) {
         `;
     });
     selectModals();
+    deleteBtn();
 }
 
 // Substituindo o switch case por um lookup na constante
@@ -154,14 +155,15 @@ function selectModals(){
         e.addEventListener("click", (e) => {
             typeModal = e.target.getAttribute("type-modal");
             idUser = e.target.parentElement.parentElement.getAttribute("id")
-            editModals(typeModal)
+            editModals(typeModal, idUser)
         })
     })
 }
 
 const btnConfirmModal = document.querySelector('#btn-confirm');
 const titleModal = document.querySelector('#exampleModalLabel');
-function editModals(typeModal){
+
+function editModals(typeModal, idUser){
     const name = document.querySelector("#input-name");
     const email = document.querySelector("#input-email");
     const client_type = document.querySelector("#modal-select-category");
@@ -170,16 +172,31 @@ function editModals(typeModal){
     if(typeModal == 'create'){
         titleModal.textContent = 'Adicionar novo cliente';
         btnConfirmModal.textContent = 'Adicionar';
+        name.value = ''
+        email.value = ''
+        client_type.value = ''
+        billing.value = ''
     } else {
         titleModal.textContent = 'Editar cliente';
         btnConfirmModal.textContent = 'Editar';
+        const selectedUser = findUser(idUser)
+        name.value = selectedUser[0].name
+        email.value = selectedUser[0].email
+        client_type.value = selectedUser[0].client_type
+        billing.value = selectedUser[0].billing
     }
 }
 
+function findUser (idUser) {
+    return users.filter( user => {
+        return user.id === idUser
+    })
+} 
+
 btnConfirmModal.addEventListener("click", save);
 function save() {
-    const name = document.querySelector("#input-name").value.toLowerCase();
-    const email = document.querySelector("#input-email").value.toLowerCase();
+    const name = document.querySelector("#input-name").value;
+    const email = document.querySelector("#input-email").value;
     const client_type = document.querySelector("#modal-select-category").value;
     const billing = document.querySelector("#input-billing").value;
 
@@ -187,7 +204,16 @@ function save() {
     if(typeModal == 'create'){
         createUser(name, email, client_type, billing)
     } else {
-        idUser = idUser.substr(4, idUser.length-1);
         editUser(idUser, name, email, client_type, billing)
     }
 }
+
+function deleteBtn () {
+    let btnsDelete = document.querySelectorAll("#btn-excluir")
+    
+    btnsDelete.forEach(btn => {
+        btn.addEventListener('click' , (e) => {
+            deleteUser(e.target.parentElement.parentElement.id)
+        })
+    })
+} 

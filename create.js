@@ -13,6 +13,9 @@ async function createUser (name, email, client_type, billing) {
                 billing
              })
          })
+         document.querySelector(".btn-close").click();
+         getAllUsersAPI()
+         showAlert('success', 'Usário adicionado com sucesso', 3000)
     } catch(error) {
         console.error('erro ao crirar novo usuario:' + error)
     }
