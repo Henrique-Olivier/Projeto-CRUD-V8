@@ -14,3 +14,19 @@ small {
 #btn-clearFilter {
     display: none;
 }
+
+/* #alert-login{
+    height: 10%;
+    position: fixed;
+    z-index: 5;
+}
+
+.icon-link.top{
+    transition: bottom .3s;
+    bottom: 85% !important;
+}
+
+.icon-link.bottom{
+    transition: bottom .3s;
+    bottom: 100% !important;
+} */
