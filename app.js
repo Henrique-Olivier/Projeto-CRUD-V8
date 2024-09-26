@@ -183,11 +183,11 @@ function save() {
     const client_type = document.querySelector("#modal-select-category").value;
     const billing = document.querySelector("#input-billing").value;
 
-    idUser = idUser.substr(4, idUser.length-1)
-
+    
     if(typeModal == 'create'){
         createUser(name, email, client_type, billing)
     } else {
+        idUser = idUser.substr(4, idUser.length-1);
         editUser(idUser, name, email, client_type, billing)
     }
 }
