@@ -73,9 +73,9 @@ const clientTypeMapping = {
 
 // Constante de mapeamento de valores de faixa
 const valueRangeMapping = {
-    '2000': user => user.values <= 2000,
-    '3000-5000': user => user.values >= 3000 && user.values <= 5000,
-    '10000': user => user.values > 10000
+    '2000': user => user.billing <= 2000,
+    '3000-5000': user => user.billing >= 3000 && user.billing <= 5000,
+    '10000': user => user.billing > 10000
 };
 
 
@@ -99,7 +99,7 @@ function Filter() {
     }
 
     if (selectCategory != 0) {
-        filteredUsers = filteredUsers.filter(user => user.type === selectCategory);
+        filteredUsers = filteredUsers.filter(user => user.client_type === selectCategory);
     }
 
     if (selectValues != 0) {
