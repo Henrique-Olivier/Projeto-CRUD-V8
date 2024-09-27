@@ -15,6 +15,10 @@ small {
     display: none;
 }
 
+#alert-modal{
+    display: none;
+}
+
 /* #alert-login{
     height: 10%;
     position: fixed;

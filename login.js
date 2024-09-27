@@ -1,4 +1,10 @@
 (function () {
+
+    const userIsLogged = localStorage.getItem('userIsLogged')
+    if (userIsLogged) {
+        window.location = './index.html'
+    } 
+
     const user = {
         email: "Mark@email.com",
         password: "1234"

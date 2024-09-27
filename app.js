@@ -169,6 +169,9 @@ function editModals(typeModal, idUser){
     const client_type = document.querySelector("#modal-select-category");
     const billing = document.querySelector("#input-billing");
 
+    const div_msg = document.querySelector("#alert-modal");
+    div_msg.style.display = "none";
+
     if(typeModal == 'create'){
         titleModal.textContent = 'Adicionar novo cliente';
         btnConfirmModal.textContent = 'Adicionar';
@@ -191,7 +194,15 @@ function findUser (idUser) {
     return users.filter( user => {
         return user.id === idUser
     })
-} 
+}
+
+function validarEmail(email) {
+    // Expressão regular para validar o e-mail
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  
+    // Testa o e-mail com a regex
+    return regex.test(email);
+  }
 
 btnConfirmModal.addEventListener("click", save);
 function save() {
@@ -199,9 +210,37 @@ function save() {
     const email = document.querySelector("#input-email").value;
     const client_type = document.querySelector("#modal-select-category").value;
     const billing = document.querySelector("#input-billing").value;
-
+    console.log(name.length)
     
     if(typeModal == 'create'){
+        if(name.length < 3) {
+            const div_msg = document.querySelector("#alert-modal");
+            div_msg.style.display = "block"
+            div_msg.textContent = "O campo nome não deve ser vazio!";
+            return;
+        }
+
+        if(!validarEmail(email)) {
+            const div_msg = document.querySelector("#alert-modal");
+            div_msg.style.display = "block"
+            div_msg.textContent = "O email preenchido é inválido!";
+            return;
+        }
+        
+        if(client_type == '') {
+            const div_msg = document.querySelector("#alert-modal");
+            div_msg.style.display = "block"
+            div_msg.textContent = "Por favor, selecione uma categoria válida!";
+            return;
+        }
+
+        if(Number(billing) <= 0) {
+            const div_msg = document.querySelector("#alert-modal");
+            div_msg.style.display = "block"
+            div_msg.textContent = "Informe um faturamento que seja maior do que zero!";
+            return;
+        }
+
         createUser(name, email, client_type, billing)
     } else {
         editUser(idUser, name, email, client_type, billing)
@@ -216,4 +255,11 @@ function deleteBtn () {
             deleteUser(e.target.parentElement.parentElement.id)
         })
     })
-} 
+}
+
+const btn_logoff = document.querySelector("#btn-logoff");
+
+btn_logoff.addEventListener("click", () => {
+    localStorage.removeItem("userIsLogged");
+    window.location.href = "./login.html"
+})
